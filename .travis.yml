@@ -3,11 +3,10 @@ dist: trusty
 addons:
   apt:
     packages:
-      - texlive-lang-cjk
       - texlive-latex-recommended
       - texlive-fonts-recommended
 script:
-  - ptex2pdf -l pasj.tex
+  - latexmk
   - mkdir public
   - mv pasj.pdf public
 deploy:
