@@ -1,14 +1,14 @@
 language: generic
 dist: trusty
-sudo: required
-install:
-  - sudo apt install texlive-latex-recommended
-  - sudo apt install texlive-fonts-recommended
+addons:
+  apt:
+    packages:
+      - texlive-latex-recommended
+      - texlive-fonts-recommended
 script:
   - ptex2pdf -l pasj.tex
   - mkdir public
   - mv pasj.pdf public
-deploy:
 deploy:
   provider: pages
   local-dir: public
