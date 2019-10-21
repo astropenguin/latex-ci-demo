@@ -1,8 +1,7 @@
-sudo: required
+language: generic
 dist: trusty
+sudo: required
 install:
-  - sudo apt update
-  - sudo apt upgrade
   - sudo apt install texlive-latex-recommended texlive-latex-extra
   - sudo apt install texlive-fonts-recommended texlive-fonts-extra
 script:
