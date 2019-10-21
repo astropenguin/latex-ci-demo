@@ -7,7 +7,7 @@ addons:
       - texlive-latex-recommended
       - texlive-fonts-recommended
 script:
-  - latexmk
+  - ptex2pdf -l pasj.tex
   - mkdir public
   - mv pasj.pdf public
 deploy:
