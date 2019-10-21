@@ -3,8 +3,7 @@ dist: trusty
 addons:
   apt:
     packages:
-      - latexmk
-      - texlive-lang-english
+      - texlive-lang-cjk
       - texlive-latex-recommended
       - texlive-fonts-recommended
 script:
