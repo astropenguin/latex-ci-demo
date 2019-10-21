@@ -1,0 +1,21 @@
+sudo: required
+dist: trusty
+install:
+  - sudo apt update
+  - sudo apt upgrade
+  - sudo apt install texlive-latex-recommended texlive-latex-extra
+  - sudo apt install texlive-fonts-recommended texlive-fonts-extra
+script:
+  - ptex2pdf -l pasj.tex
+  - mkdir public
+  - mv pasj.pdf public
+deploy:
+deploy:
+  provider: pages
+  local-dir: public
+  target-branch: gh-pages
+  github-token: $GITHUB_TOKEN
+  skip-cleanup: true
+  keep-history: true
+  on:
+    branch: master
