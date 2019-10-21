@@ -2,8 +2,8 @@ language: generic
 dist: trusty
 sudo: required
 install:
-  - sudo apt install texlive-latex-recommended texlive-latex-extra
-  - sudo apt install texlive-fonts-recommended texlive-fonts-extra
+  - sudo apt install texlive-latex-recommended
+  - sudo apt install texlive-fonts-recommended
 script:
   - ptex2pdf -l pasj.tex
   - mkdir public
