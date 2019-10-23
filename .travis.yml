@@ -10,7 +10,7 @@ addons:
 script:
   - ptex2pdf -l pasj.tex
   - mkdir public
-  - qpdf --encrypt $PDF_PW $PDF_PW 256 public/pasj.pdf
+  - qpdf --encrypt $PDF_PW $PDF_PW 256 -- pasj.pdf public/pasj.pdf
 deploy:
   provider: pages
   local-dir: public
