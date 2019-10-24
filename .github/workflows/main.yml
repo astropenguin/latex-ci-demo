@@ -10,9 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: install packages
+      - name: Install packages
         run: |
           sudo apt install qpdf
           sudo apt install texlive-lang-cjk
           sudo apt install texlive-latex-recommended
           sudo apt install texlive-fonts-recommended
+      - name: Build LaTeX document
+        run: |
+          ptex2pdf -l pasj.tex
