@@ -25,7 +25,7 @@ jobs:
           qpdf --encrypt $PDF_PW $PDF_PW 256 -- pasj.pdf public/pasj.pdf
         env:
           PDF_PW: ${{ secrets.PDF_PW }}
-      - name: Deploy document
+      - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v2.5.0
         env:
           PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
