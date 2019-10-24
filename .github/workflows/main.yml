@@ -34,7 +34,7 @@ jobs:
       - name: Notify Slack
         uses: pullreminders/slack-action@v1.0.7
         with:
-          args: |-
+          args: >-
             {
               "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
               "text": "Hello, world!"
