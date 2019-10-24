@@ -19,3 +19,17 @@ jobs:
       - name: Build LaTeX document
         run: |
           ptex2pdf -l pasj.tex
+      - name: Encrypt PDF
+        run: |
+          mkdir public
+          qpdf --encrypt $PDF_PW $PDF_PW 256 -- pasj.pdf public/pasj.pdf
+        env:
+          PDF_PW: ${{ secrets.PDF_PW }}
+      - name: Deploy document
+        uses: peaceiris/actions-gh-pages@v2.5.0
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: public
+
+
