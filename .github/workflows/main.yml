@@ -38,4 +38,4 @@ jobs:
       - name: Notify Slack
         run: |
           PAYLOAD="payload={\"text\": \"$GH_PAGES_URL/$ENCRYPTED.pdf\"}"
-          curl -X POST --data-urlencode $PAYLOAD $SLACK_WEBHOOK_URL
+          curl -X POST --data-urlencode "$PAYLOAD" $SLACK_WEBHOOK_URL
