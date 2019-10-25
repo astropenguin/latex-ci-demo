@@ -30,12 +30,12 @@ jobs:
       - name: Encrypt PDF
         run: |
           ENCRYPTED=$ARTICLE-$(git rev-parse --short HEAD)
-          echo ::set-output name=url::${GH_PAGES_URL}/$ENCRYPTED.pdf
+          echo ::set-env name=ENCRYPTED::$ENCRYPTED
           mkdir $PUBLISH_DIR
           qpdf --encrypt $PDF_PW $PDF_PW 256 -- $ARTICLE.pdf $PUBLISH_DIR/$ENCRYPTED.pdf
       - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v2.5.0
       - name: Notify Slack
-        uses: Ilshidur/action-slack@1.6.2
-        with:
-          args: URL is ${{ steps.vars.outputs.url }}
+        run: |
+          URL=$GH_PAGES_URL/$ENCRYPTED.pdf
+          curl -X POST --data-urlencode "payload={\"text\": \"$URL\"}" $SLACK_WEBHOOK
