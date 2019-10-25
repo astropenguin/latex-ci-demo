@@ -38,7 +38,9 @@ jobs:
           touch $PUBLISH_DIR/.nojekyll
           mv $ENCRYPTED.pdf $PUBLISH_DIR
       - name: Deploy products
-        uses: peaceiris/actions-gh-pages@v2.5.0
+        uses: peaceiris/actions-gh-pages@v2.6.0-rc0
+        with:
+          forceOrphan: true
       - name: Notify Slack
         run: |
           PAYLOAD="payload={\"text\": \"$GH_PAGES_URL/$ENCRYPTED.pdf\"}"
