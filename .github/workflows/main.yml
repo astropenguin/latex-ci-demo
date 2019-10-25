@@ -14,9 +14,8 @@ jobs:
       PUBLISH_BRANCH: gh-pages
       PDF_PW: ${{ secrets.PDF_PW }}
       PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      SLACK_CH_ID: ${{ secrets.SLACK_CH_ID }}
-      TEXT: Hello, world!
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      GH_PAGES_URL: https://astropenguin.github.io/latex-ci-demo
     steps:
       - uses: actions/checkout@v1
       - name: Install packages
@@ -26,15 +25,18 @@ jobs:
           sudo apt install texlive-latex-recommended
           sudo apt install texlive-fonts-recommended
       - name: Build LaTeX document
-        run: ptex2pdf -l $ARTICLE.tex
+        run: |
+          ptex2pdf -l $ARTICLE.tex
       - name: Encrypt PDF
         run: |
-          mkdir $PUBLISH_DIR
           ENCRYPTED=$PUBLISH_DIR/$ARTICLE-$(git rev-parse --short HEAD)
+          echo ::set-output name=url::${GH_PAGES_URL}/$ENCRYPTED.pdf
+          mkdir $PUBLISH_DIR
           qpdf --encrypt $PDF_PW $PDF_PW 256 -- $ARTICLE.pdf $ENCRYPTED.pdf
       - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v2.5.0
       - name: Notify Slack
-        uses: pullreminders/slack-action@v1.0.7
+        uses: Ilshidur/action-slack@1.6.2
         with:
-          args: '{\"channel\":\"$SLACK_CH_ID }}\",\"text\":\"$TEXT\"}'
+          args: ${{ steps.vars.outputs.url }}
+
