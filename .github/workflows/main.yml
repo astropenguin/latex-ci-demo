@@ -8,6 +8,15 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
+    env:
+      ARTICLE: pasj
+      PUBLISH_DIR: public
+      PUBLISH_BRANCH: gh-pages
+      PDF_PW: ${{ secrets.PDF_PW }}
+      PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CH_ID: ${{ secrets.SLACK_CH_ID }}
+      TEXT: Hello, world!
     steps:
       - uses: actions/checkout@v1
       - name: Install packages
@@ -17,24 +26,15 @@ jobs:
           sudo apt install texlive-latex-recommended
           sudo apt install texlive-fonts-recommended
       - name: Build LaTeX document
-        run: |
-          ptex2pdf -l pasj.tex
+        run: ptex2pdf -l $ARTICLE.tex
       - name: Encrypt PDF
         run: |
-          mkdir public
-          TEXT="Hello, world!"
-          qpdf --encrypt $PDF_PW $PDF_PW 256 -- pasj.pdf public/pasj.pdf
-        env:
-          PDF_PW: ${{ secrets.PDF_PW }}
+          mkdir $PUBLISH_DIR
+          ENCRYPTED=$PUBLISH_DIR/$ARTICLE-$(git rev-parse --short HEAD)
+          qpdf --encrypt $PDF_PW $PDF_PW 256 -- $ARTICLE.pdf $ENCRYPTED.pdf
       - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v2.5.0
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: public
       - name: Notify Slack
         uses: pullreminders/slack-action@v1.0.7
         with:
-          args: '{\"channel\":\"${{ secrets.SLACK_CHANNEL_ID }}\",\"text\":\"${TEXT}\"}'
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          args: '{\"channel\":\"$SLACK_CH_ID }}\",\"text\":\"$TEXT\"}'
