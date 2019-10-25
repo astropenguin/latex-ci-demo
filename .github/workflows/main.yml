@@ -29,7 +29,8 @@ jobs:
           ptex2pdf -l $ARTICLE.tex
       - name: Encrypt PDF
         run: |
-          echo ::set-env name=ENCRYPTED::$ARTICLE-$(git rev-parse --short HEAD)
+          ENCRYPTED=$ARTICLE-$(git rev-parse --short HEAD)
+          echo ::set-env name=ENCRYPTED::$ENCRYPTED
           qpdf --encrypt "$PDF_PW" "$PDF_PW" 256 -- $ARTICLE.pdf $ENCRYPTED.pdf
       - name: Make products
         run: |
