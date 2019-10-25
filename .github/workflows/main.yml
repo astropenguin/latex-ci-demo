@@ -12,10 +12,10 @@ jobs:
       ARTICLE: pasj
       PUBLISH_DIR: public
       PUBLISH_BRANCH: gh-pages
+      GH_PAGES_URL: https://astropenguin.github.io/latex-ci-demo
       PDF_PW: ${{ secrets.PDF_PW }}
       PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      GH_PAGES_URL: https://astropenguin.github.io/latex-ci-demo
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - uses: actions/checkout@v1
       - name: Install packages
@@ -37,5 +37,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v2.5.0
       - name: Notify Slack
         run: |
-          URL=$GH_PAGES_URL/$ENCRYPTED.pdf
-          curl -X POST --data-urlencode "payload={\"text\": \"$URL\"}" $SLACK_WEBHOOK
+          PAYLOAD="payload={\"text\": \"$GH_PAGES_URL/$ENCRYPTED.pdf\"}"
+          curl -X POST --data-urlencode $PAYLOAD $SLACK_WEBHOOK_URL
