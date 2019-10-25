@@ -29,14 +29,13 @@ jobs:
           ptex2pdf -l $ARTICLE.tex
       - name: Encrypt PDF
         run: |
-          ENCRYPTED=$PUBLISH_DIR/$ARTICLE-$(git rev-parse --short HEAD)
+          ENCRYPTED=$ARTICLE-$(git rev-parse --short HEAD)
           echo ::set-output name=url::${GH_PAGES_URL}/$ENCRYPTED.pdf
           mkdir $PUBLISH_DIR
-          qpdf --encrypt $PDF_PW $PDF_PW 256 -- $ARTICLE.pdf $ENCRYPTED.pdf
+          qpdf --encrypt $PDF_PW $PDF_PW 256 -- $ARTICLE.pdf $PUBLISH_DIR/$ENCRYPTED.pdf
       - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v2.5.0
       - name: Notify Slack
         uses: Ilshidur/action-slack@1.6.2
         with:
-          args: ${{ steps.vars.outputs.url }}
-
+          args: URL is ${{ steps.vars.outputs.url }}
